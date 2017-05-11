@@ -3,6 +3,4 @@
 
 __version__ = '4.1.3.dev0'
 
-__requires__ = [
-    'traits',
-]
+__requires__ = ['traits', ]

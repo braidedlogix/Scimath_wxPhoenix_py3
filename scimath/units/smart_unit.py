@@ -28,29 +28,29 @@ from scimath.units.SI import dimensionless
 
 from scimath.units.unit import unit
 
+
 class OffsetUnit(unit):
     """ Special unit to handle temperatures as absolutes--including offsets """
 
-    def __init__(self,factor,derivation,offset=0.0):
-        warnings.warn("Using the OffsetUnit class is not recommended as its offset"
-                      " attribute is now available on the more general parent "
-                      "class: scimath.units.unit.unit.")
-        unit.__init__(self,factor,derivation)
+    def __init__(self, factor, derivation, offset=0.0):
+        warnings.warn(
+            "Using the OffsetUnit class is not recommended as its offset"
+            " attribute is now available on the more general parent "
+            "class: scimath.units.unit.unit.")
+        unit.__init__(self, factor, derivation)
         self.offset = offset
 
     def __eq__(self, other):
         """ return true if self and other are the same """
-        return ( super(OffsetUnit,self).__eq__(other)
-                and hasattr(self, 'offset')
-                and hasattr(other,'offset')
-                and (self.offset == other.offset) )
+        return (super(OffsetUnit, self).__eq__(other) and
+                hasattr(self, 'offset') and hasattr(other, 'offset') and
+                (self.offset == other.offset))
 
     def __ne__(self, other):
         """ return true if self and other are not the same """
-        return ( super(OffsetUnit,self).__ne__(other)
-                or (hasattr(self, 'offset')
-                    and hasattr(other,'offset')
-                    and (self.offset != other.offset) ))
+        return (super(OffsetUnit, self).__ne__(other) or
+                (hasattr(self, 'offset') and hasattr(other, 'offset') and
+                 (self.offset != other.offset)))
 
 
 class SmartUnit(OffsetUnit):
@@ -59,7 +59,6 @@ class SmartUnit(OffsetUnit):
     adds the capability to add a pretty label such as 'g/cc' to display instead
     of '1000*kg*m**-3'.
     """
-
 
     def __init__(self, label, value, derivation, offset, valid):
 
@@ -71,9 +70,9 @@ class SmartUnit(OffsetUnit):
 
     def __eq__(self, other):
         """ return true if self and other are the same """
-        return ( super(OffsetUnit, self).__eq__(other)
-                 and ((hasattr(other, 'offset') and self.offset == other.offset)
-                       or self.offset == 0) )
+        return (super(OffsetUnit, self).__eq__(other) and
+                ((hasattr(other, 'offset') and self.offset == other.offset) or
+                 self.offset == 0))
 
     def is_valid(self):
         return self.valid
@@ -111,11 +110,12 @@ class SmartUnit(OffsetUnit):
         try:
             convert(1.0, self, new_unit)
             ok = True
-        except Exception, msg:
+        except Exception as msg:
             #print 'Failed at convert stage ', msg
             ok = False
 
         return ok
+
 
 def is_dimensionless(unit):
     """ Determines whether a unit is dimensionless, i.e., has no units.
@@ -124,5 +124,6 @@ def is_dimensionless(unit):
         return True
 
     return False
+
 
 ### EOF #######################################################################

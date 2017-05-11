@@ -1,7 +1,6 @@
 """
 """
 # we don't want integer division when dealing with units
-from __future__ import division
 
 from numpy import array, log10
 
@@ -9,7 +8,7 @@ from traits.api import HasTraits, Float, String, Unicode, Bool, \
     Dict, Any, Instance, Property, cached_property
 #from traitsui.api import View, Item, Group
 
-from dimensions import Dimensions, Dim
+from .dimensions import Dimensions, Dim
 
 
 class Unit(HasTraits):
@@ -61,10 +60,9 @@ class Unit(HasTraits):
                 the value in the base units
         """
         if self.logarithmic:
-            return self.log_base**(x/self.scale+self.offset)
+            return self.log_base**(x / self.scale + self.offset)
         else:
-            return x/self.scale + self.offset
-
+            return x / self.scale + self.offset
 
     def convert_from_base(self, x):
         """ Convert a value from base units
@@ -84,10 +82,9 @@ class Unit(HasTraits):
                 the value in this set of units
         """
         if self.logarithmic:
-            return self.scale*(log10(x)/log10(self.log_base) - self.offset)
+            return self.scale * (log10(x) / log10(self.log_base) - self.offset)
         else:
-            return self.scale*(x - self.offset)
-
+            return self.scale * (x - self.offset)
 
     def convert_to_unit(self, x, unit):
         """ Convert a value to compatible units
@@ -146,24 +143,25 @@ class Unit(HasTraits):
             and (not self.logarithmic or self.log_base == other.log_base)
 
     def __hash__(self):
-        return hash((tuple(item for item in self.dimensions.dimension_dict.items()),
-                    self.scale, self.offset, self.logarithmic, self.log_base))
+        return hash((tuple(
+            item for item in list(self.dimensions.dimension_dict.items())),
+                     self.scale, self.offset, self.logarithmic, self.log_base))
 
     def __mul__(self, other):
-        if isinstance(other, (float, int, long, array)):
+        if isinstance(other, (float, int, array)):
             return Quantity(magnitude=other, units=self)
         else:
             raise NotImplementedError
 
     def __rmul__(self, other):
-        if isinstance(other, (float, int, long, array)):
+        if isinstance(other, (float, int, array)):
             return Quantity(magnitude=other, units=self)
         else:
             raise NotImplementedError
 
     def __div__(self, other):
-        if isinstance(other, (float, int, long, array)):
-            return Quantity(magnitude=1.0/other, units=self)
+        if isinstance(other, (float, int, array)):
+            return Quantity(magnitude=1.0 / other, units=self)
         else:
             raise NotImplementedError
 
@@ -185,40 +183,40 @@ class MultiplicativeUnit(Unit):
     derivation = Dict
 
     def convert_to_base(self, x):
-        return x/self.scale
+        return x / self.scale
 
     def convert_from_base(self, x):
-        return x*self.scale
+        return x * self.scale
 
     def make_converter(self, other):
         """Return a function which converts from self to other.
         """
         if isinstance(other, MultiplicativeUnit):
-            return lambda x: x*(other.scale/self.scale)
+            return lambda x: x * (other.scale / self.scale)
         else:
             return super(MultiplicativeUnit, self).make_converter(other)
 
     def __mul__(self, other):
         if isinstance(other, MultiplicativeUnit):
-            return DerivedUnit(derivation=dict_add(self.derivation,
-                                                   other.derivation),
-                        scale=self.scale*other.scale)
+            return DerivedUnit(
+                derivation=dict_add(self.derivation, other.derivation),
+                scale=self.scale * other.scale)
         else:
             raise NotImplementedError
 
     def __div__(self, other):
         if isinstance(other, Unit):
-            return DerivedUnit( derivation=dict_sub(self.derivation,
-                                                    other.derivation),
-                        scale=self.scale/other.scale)
+            return DerivedUnit(
+                derivation=dict_sub(self.derivation, other.derivation),
+                scale=self.scale / other.scale)
         else:
             raise NotImplementedError
 
     def __pow__(self, other):
-        if isinstance(other, (float, int, long)):
-            return DerivedUnit(derivation=dict_mul(self.derivation,
-                                                   other.derivation),
-                        scale=self.scale**other)
+        if isinstance(other, (float, int)):
+            return DerivedUnit(
+                derivation=dict_mul(self.derivation, other.derivation),
+                scale=self.scale**other)
         else:
             raise NotImplementedError
 
@@ -241,19 +239,23 @@ class DerivedUnit(MultiplicativeUnit):
 
     @cached_property
     def get_symbol(self):
-        return format_expansion(dict((key.symbol, power)
-                                     for key, power in self.derivation.items()),
-                                mul=" ", pow_func=unicode_power, div=True)
+        return format_expansion(
+            dict((key.symbol, power)
+                 for key, power in list(self.derivation.items())),
+            mul=" ",
+            pow_func=unicode_power,
+            div=True)
 
     @cached_property
     def get_expression(self):
-        return format_expansion(dict((key.expression, power)
-                                     for key, power in self.derivation.items()))
+        return format_expansion(
+            dict((key.expression, power)
+                 for key, power in list(self.derivation.items())))
 
     @cached_property
     def get_dimensions(self):
         dim = dimensionless
-        for key, power in self.derivation.items():
+        for key, power in list(self.derivation.items()):
             dim *= key.dimensions**power
         return dim
 
@@ -266,7 +268,7 @@ class NamedUnit(MultiplicativeUnit):
 
 class BaseUnit(NamedUnit):
     def convert_to_base(self, x):
-        return x*self.scale
+        return x * self.scale
 
     def convert_from_base(self, x):
-        return x/self.scale
+        return x / self.scale

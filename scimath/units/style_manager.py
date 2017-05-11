@@ -24,7 +24,7 @@
 from traits.api import HasPrivateTraits, Dict
 
 # local imports
-from scimath.units.unit_db        import UnitDB
+from scimath.units.unit_db import UnitDB
 
 
 class StyleManager(HasPrivateTraits):
@@ -37,12 +37,12 @@ class StyleManager(HasPrivateTraits):
     #        style type name as the key (i.e. 'color' or 'line') and a setting
     #        as the value--e.g.
     #        {'pvelocity':{'color': 'red, 'line': 'solid', ...}, ...}
-    styles = Dict # fixme: This was 'styles=Dict(Dict)' huh?
+    styles = Dict  # fixme: This was 'styles=Dict(Dict)' huh?
     # ranges is a Dictionary with family name as the key and a dictionary of
     #        range settings as the value.  The dictionary of range settings
     #        is the unit_system as the key and a tuple of (left, right) values
     #        as the range values.
-    ranges = Dict # fixme: This was 'ranges=Dict(Dict)' huh?
+    ranges = Dict  # fixme: This was 'ranges=Dict(Dict)' huh?
 
     def __init__(self):
 
@@ -56,7 +56,6 @@ class StyleManager(HasPrivateTraits):
 
         return
 
-
     ###########################################################################
     # 'StyleManager' interface.
     ###########################################################################
@@ -67,7 +66,7 @@ class StyleManager(HasPrivateTraits):
             """
 
         # for now, assume we can get the family_name from the obj, if needed
-        if family_name==None:
+        if family_name == None:
             family_name = obj.family_name
 
         return self.styles[family_name][info]
@@ -79,7 +78,7 @@ class StyleManager(HasPrivateTraits):
         from scimath.units.unit_manager import unit_manager
 
         # for now, assume we can get the family_name from the obj, if needed
-        if family_name==None:
+        if family_name == None:
             family_name = obj.family_name
 
         # If unit_system is None, sets to default system, or looks up string
@@ -90,6 +89,5 @@ class StyleManager(HasPrivateTraits):
 
 # The as-yet unenforced singleton instance
 style_manager = StyleManager()
-
 
 #### EOF ######################################################################

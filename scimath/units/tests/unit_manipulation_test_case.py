@@ -19,6 +19,7 @@ from scimath.units.api import UnitArray, UnitScalar
 from scimath.units.unit_manipulation import \
     convert_units, set_units, have_some_units, strip_units
 
+
 class ConvertUnitsTestCase(unittest.TestCase):
     """ ConvertUnits should pretty much leave anything without units alone
         and pass them through silently.  UnitArrays do get converted,
@@ -53,19 +54,19 @@ class ConvertUnitsTestCase(unittest.TestCase):
         """ Does it pass a an array through correctly?
         """
         units = [None]
-        a = array((1,2,3))
+        a = array((1, 2, 3))
         result = convert_units(units, a)
-        self.assertTrue(all(a==result))
+        self.assertTrue(all(a == result))
 
     def test_two_arrays(self):
         """ Does it pass a two arrays through correctly?
         """
         units = [None, None]
-        a = array((1,2,3))
-        b = array((3,4,5))
-        aa,bb = convert_units(units, a, b)
-        self.assertTrue(all(a==aa))
-        self.assertTrue(all(b==bb))
+        a = array((1, 2, 3))
+        b = array((3, 4, 5))
+        aa, bb = convert_units(units, a, b)
+        self.assertTrue(all(a == aa))
+        self.assertTrue(all(b == bb))
 
     def test_convert_array_with_units(self):
         """ Does it add units to an array correctly?
@@ -73,18 +74,18 @@ class ConvertUnitsTestCase(unittest.TestCase):
             fixme: This may be exactly what we don't want to happen!
         """
         units = [feet]
-        a = array((1,2,3))
+        a = array((1, 2, 3))
         aa = convert_units(units, a)
-        self.assertTrue(all(a==aa))
+        self.assertTrue(all(a == aa))
         self.assertTrue(type(aa) is ndarray)
 
     def test_convert_unit_array(self):
         """ Does it convert an array correctly?
         """
         units = [feet]
-        a = UnitArray((1,2,3),units=meters)
+        a = UnitArray((1, 2, 3), units=meters)
         aa = convert_units(units, a)
-        self.assertTrue(allclose(a,aa.as_units(meters)))
+        self.assertTrue(allclose(a, aa.as_units(meters)))
         # fixme: This actually may be something we don't want.  For speed,
         #        if this were just a standard array, we would be better off.
         self.assertEqual(aa.units, feet)
@@ -93,9 +94,9 @@ class ConvertUnitsTestCase(unittest.TestCase):
         """ Does it convert a scalar correctly?
         """
         units = [feet]
-        a = UnitScalar(3.,units=meters)
+        a = UnitScalar(3., units=meters)
         aa = convert_units(units, a)
-        self.assertTrue(allclose(a,aa.as_units(meters)))
+        self.assertTrue(allclose(a, aa.as_units(meters)))
         self.assertEqual(aa.units, feet)
 
     def test_incompatible_array_units_raise_exception(self):
@@ -104,7 +105,7 @@ class ConvertUnitsTestCase(unittest.TestCase):
             fixme: Do we want this configurable?
         """
         units = [second]
-        a = UnitArray((1,2,3),units=meters)
+        a = UnitArray((1, 2, 3), units=meters)
         self.assertRaises(InvalidConversion, convert_units, units, a)
 
     def test_incompatible_scalar_units_raise_exception(self):
@@ -113,7 +114,7 @@ class ConvertUnitsTestCase(unittest.TestCase):
             fixme: Do we want this configurable?
         """
         units = [second]
-        a = UnitScalar(3.,units=meters)
+        a = UnitScalar(3., units=meters)
         self.assertRaises(InvalidConversion, convert_units, units, a)
 
     def test_dont_convert_unit_array(self):
@@ -123,9 +124,9 @@ class ConvertUnitsTestCase(unittest.TestCase):
                   optimization.
         """
         units = [feet]
-        a = UnitArray((1,2,3),units=feet)
+        a = UnitArray((1, 2, 3), units=feet)
         aa = convert_units(units, a)
-        self.assertTrue(id(a),id(aa))
+        self.assertTrue(id(a), id(aa))
 
     def test_dont_convert_unit_scalar(self):
         """ Does it return the same object if units are the same?
@@ -134,26 +135,26 @@ class ConvertUnitsTestCase(unittest.TestCase):
                   optimization.
         """
         units = [feet]
-        a = UnitScalar(3.,units=feet)
+        a = UnitScalar(3., units=feet)
         aa = convert_units(units, a)
-        self.assertTrue(id(a),id(aa))
+        self.assertTrue(id(a), id(aa))
 
     def test_convert_different_args(self):
         """ Does it handle multiple different args correctly?
         """
         units = [feet, meters, None, feet]
-        a = UnitArray((1,2,3),units=meters)
-        b = array((2,3,4))
+        a = UnitArray((1, 2, 3), units=meters)
+        b = array((2, 3, 4))
         c = 1
-        d = UnitScalar(3.,units=meters)
+        d = UnitScalar(3., units=meters)
         aa, bb, cc, dd = convert_units(units, a, b, c, d)
-        self.assertTrue(allclose(a,aa.as_units(meters)))
-        self.assertTrue(allclose(b,bb))
-        self.assertEqual(c,cc)
-        self.assertTrue(allclose(d,dd.as_units(meters)))
+        self.assertTrue(allclose(a, aa.as_units(meters)))
+        self.assertTrue(allclose(b, bb))
+        self.assertEqual(c, cc)
+        self.assertTrue(allclose(d, dd.as_units(meters)))
+
 
 class SetUnitsTestCase(unittest.TestCase):
-
 
     ############################################################################
     # TestCase interface.
@@ -185,9 +186,9 @@ class SetUnitsTestCase(unittest.TestCase):
         """ Does it pass a an array through correctly?
         """
         units = [None]
-        a = array((1,2,3))
+        a = array((1, 2, 3))
         result = set_units(units, a)
-        self.assertTrue(all(a==result))
+        self.assertTrue(all(a == result))
 
     def test_set_scalar_with_units(self):
         """ Does it add units to a scalar correctly?
@@ -204,9 +205,9 @@ class SetUnitsTestCase(unittest.TestCase):
             fixme: This may be exactly what we don't want to happen!
         """
         units = [feet]
-        a = array((1,2,3))
+        a = array((1, 2, 3))
         aa = set_units(units, a)
-        self.assertTrue(all(a==aa))
+        self.assertTrue(all(a == aa))
         self.assertEqual(aa.units, feet)
 
     def test_set_zero_dim_array_with_units(self):
@@ -217,7 +218,7 @@ class SetUnitsTestCase(unittest.TestCase):
         units = [feet]
         a = array(2)
         aa = set_units(units, a)
-        self.assertTrue(all(a==aa))
+        self.assertTrue(all(a == aa))
         self.assertEqual(aa.units, feet)
         assert isinstance(aa, UnitScalar)
 
@@ -242,10 +243,12 @@ class SetUnitsTestCase(unittest.TestCase):
         """ Does it overwrite units on a UnitArray correctly?
         """
         units = [feet]
-        a = UnitArray((1,2,3),units=meters)
+        a = UnitArray((1, 2, 3), units=meters)
         aa = set_units(units, a)
-        self.assertTrue(all(a==aa))
+        self.assertTrue(all(a == aa))
         self.assertEqual(aa.units, feet)
+
+
 #
 #    def test_raises_exception(self):
 #        """ Does it return the same object if units are the same?
@@ -282,7 +285,7 @@ class HaveSomeUnitsTestCase(unittest.TestCase):
 
     def setUp(self):
         # Make some useful data.
-        self.unit_array = UnitArray((1,2,3), units=meters)
+        self.unit_array = UnitArray((1, 2, 3), units=meters)
         self.unit_scalar = UnitScalar(1, units=meters)
         self.plain_array = array([1, 2, 3])
         self.plain_scalar = 1
@@ -307,10 +310,18 @@ class HaveSomeUnitsTestCase(unittest.TestCase):
         self.assertFalse(have_some_units(self.plain_array, self.plain_scalar))
 
     def test_finds_any_unitted(self):
-        self.assertTrue(have_some_units(self.unit_array, self.plain_array, self.plain_scalar))
-        self.assertTrue(have_some_units(self.plain_array, self.unit_array, self.plain_scalar))
-        self.assertTrue(have_some_units(self.unit_scalar, self.plain_array, self.plain_scalar))
-        self.assertTrue(have_some_units(self.plain_array, self.unit_scalar, self.plain_scalar))
+        self.assertTrue(
+            have_some_units(self.unit_array, self.plain_array,
+                            self.plain_scalar))
+        self.assertTrue(
+            have_some_units(self.plain_array, self.unit_array,
+                            self.plain_scalar))
+        self.assertTrue(
+            have_some_units(self.unit_scalar, self.plain_array,
+                            self.plain_scalar))
+        self.assertTrue(
+            have_some_units(self.plain_array, self.unit_scalar,
+                            self.plain_scalar))
 
 
 class StripUnitsTestCase(unittest.TestCase):
@@ -319,21 +330,24 @@ class StripUnitsTestCase(unittest.TestCase):
 
     def setUp(self):
         # Make some useful data.
-        self.unit_array = UnitArray((1,2,3), units=meters)
+        self.unit_array = UnitArray((1, 2, 3), units=meters)
         self.unit_scalar = UnitScalar(1, units=meters)
         self.plain_array = array([1, 2, 3])
         self.plain_scalar = 1
         unittest.TestCase.setUp(self)
 
     def test_strip_units_one_arg(self):
-        self.assertFalse(isinstance(strip_units(self.unit_array),
-            (UnitArray, UnitScalar)))
-        self.assertFalse(isinstance(strip_units(self.unit_scalar),
-            (UnitArray, UnitScalar)))
-        self.assertFalse(isinstance(strip_units(self.plain_array),
-            (UnitArray, UnitScalar)))
-        self.assertFalse(isinstance(strip_units(self.plain_scalar),
-            (UnitArray, UnitScalar)))
+        self.assertFalse(
+            isinstance(strip_units(self.unit_array), (UnitArray, UnitScalar)))
+        self.assertFalse(
+            isinstance(
+                strip_units(self.unit_scalar), (UnitArray, UnitScalar)))
+        self.assertFalse(
+            isinstance(
+                strip_units(self.plain_array), (UnitArray, UnitScalar)))
+        self.assertFalse(
+            isinstance(
+                strip_units(self.plain_scalar), (UnitArray, UnitScalar)))
 
         # Check for stupidity when returning only one argument.
         self.assertFalse(isinstance(strip_units(self.unit_scalar), tuple))
@@ -341,18 +355,18 @@ class StripUnitsTestCase(unittest.TestCase):
 
     def test_strip_units_multi_arg(self):
         outs = strip_units(self.unit_array, self.unit_scalar)
-        self.assertEquals(len(outs), 2)
+        self.assertEqual(len(outs), 2)
         for x in outs:
             self.assertFalse(isinstance(x, (UnitArray, UnitScalar)))
 
         outs = strip_units(self.plain_array, self.plain_scalar)
-        self.assertEquals(len(outs), 2)
+        self.assertEqual(len(outs), 2)
         for x in outs:
             self.assertFalse(isinstance(x, (UnitArray, UnitScalar)))
 
         outs = strip_units(self.unit_array, self.unit_scalar, self.plain_array,
-            self.plain_scalar)
-        self.assertEquals(len(outs), 4)
+                           self.plain_scalar)
+        self.assertEqual(len(outs), 4)
         for x in outs:
             self.assertFalse(isinstance(x, (UnitArray, UnitScalar)))
 

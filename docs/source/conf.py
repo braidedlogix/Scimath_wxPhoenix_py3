@@ -31,7 +31,7 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.pngmath',
     'sphinx.ext.viewcode',
-    ]
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -49,7 +49,10 @@ copyright = '2008-2011, Enthought'
 # The default replacements for |version| and |release|, also used in various
 # other places throughout the built documents.
 d = {}
-execfile(os.path.join('..', '..', 'scimath', '__init__.py'), d)
+exec(
+    compile(
+        open(os.path.join('..', '..', 'scimath', '__init__.py')).read(),
+        os.path.join('..', '..', 'scimath', '__init__.py'), 'exec'), d)
 version = release = d['__version__']
 
 # There are two options for replacing |today|: either, you set today to some
@@ -81,7 +84,6 @@ today_fmt = '%B %d, %Y'
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
-
 
 # Options for HTML output
 # -----------------------
@@ -150,7 +152,6 @@ html_use_modindex = True
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'SciMathdoc'
 
-
 # Options for LaTeX output
 # ------------------------
 
@@ -163,7 +164,7 @@ htmlhelp_basename = 'SciMathdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, document class [howto/manual]).
 latex_documents = [
-  ('index', 'ETS.tex', 'ETS Documentation', 'Enthought', 'manual'),
+    ('index', 'ETS.tex', 'ETS Documentation', 'Enthought', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of

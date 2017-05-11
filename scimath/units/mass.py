@@ -26,8 +26,8 @@
 # Imports:
 #############################################################################
 
-from SI import kilogram
-from SI import kilo, centi, milli
+from .SI import kilogram
+from .SI import kilo, centi, milli
 
 #############################################################################
 # Definitions:
@@ -68,6 +68,5 @@ gm = gram
 lb = pound
 pounds = pound
 lbs = lb
-
 
 #### EOF ######################################################################

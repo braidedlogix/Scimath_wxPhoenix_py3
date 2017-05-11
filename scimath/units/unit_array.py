@@ -6,21 +6,24 @@ from scimath.units import convert
 from scimath.units.unit import unit, dimensionless, IncompatibleUnits
 from scimath.units.unit_parser import unit_parser
 
-def __newobj__ ( cls, *args ):
+
+def __newobj__(cls, *args):
     """ Unpickles new-style objects.
     """
-    return cls.__new__( cls, *args )
+    return cls.__new__(cls, *args)
 
 
-_retain_units = [numpy.absolute, numpy.negative,
-                 numpy.floor, numpy.ceil, numpy.rint, numpy.conjugate,
-                 numpy.maximum, numpy.minimum]
+_retain_units = [
+    numpy.absolute, numpy.negative, numpy.floor, numpy.ceil, numpy.rint,
+    numpy.conjugate, numpy.maximum, numpy.minimum
+]
 
-_retain_units_if_same = [] #[numpy.add, numpy.subtract]
+_retain_units_if_same = []  #[numpy.add, numpy.subtract]
 
-_retain_units_if_single = [] #[numpy.multiply]
+_retain_units_if_single = []  #[numpy.multiply]
 
-_retain_units_if_only_first = [numpy.remainder] #, numpy.divide]
+_retain_units_if_only_first = [numpy.remainder]  #, numpy.divide]
+
 
 class UnitArray(numpy.ndarray):
     """ Define a UnitArray that subclasses from a Numpy array
@@ -75,7 +78,7 @@ class UnitArray(numpy.ndarray):
         end = base_str.rfind(')')
 
         if start > -1 and end > -1:
-            base_str = base_str[start+1:end]
+            base_str = base_str[start + 1:end]
 
         return "UnitArray(%s, units='%s')" % (base_str, repr(self.units))
 
@@ -89,7 +92,7 @@ class UnitArray(numpy.ndarray):
         """
 
         state = (self.units, super(UnitArray, self).__reduce_ex__(protocol))
-        return ( __newobj__, ( self.__class__, ()), state )
+        return (__newobj__, (self.__class__, ()), state)
 
     def __setstate__(self, state):
         """
@@ -101,8 +104,8 @@ class UnitArray(numpy.ndarray):
         self.units = units
 
     def __deepcopy__(self, memo={}):
-        copy = self.__class__(self.view(numpy.ndarray), copy=True,
-                             units=self.units)
+        copy = self.__class__(
+            self.view(numpy.ndarray), copy=True, units=self.units)
         memo[id(self)] = copy
         return copy
 
@@ -120,7 +123,6 @@ class UnitArray(numpy.ndarray):
                 http://docs.python.org/ref/customization.html
 
         """
-
 
         ### Array Setup ########################################################
 
@@ -144,11 +146,10 @@ class UnitArray(numpy.ndarray):
             # Handle other input types (lists, etc.)
             arr = numpy.array(data, dtype=dtype, copy=copy)
 
-            res = numpy.ndarray.__new__(cls, arr.shape, arr.dtype,
-                                        buffer=arr)
+            res = numpy.ndarray.__new__(cls, arr.shape, arr.dtype, buffer=arr)
 
         ### Configure Other Attributes #########################################
-        if isinstance(units, basestring):
+        if isinstance(units, str):
             units = unit_parser.parse_unit(units)
 
         res.units = units
@@ -204,7 +205,7 @@ class UnitArray(numpy.ndarray):
                     if u is not None:
                         if theunit is None:
                             theunit = u
-                        elif u != dimensionless: # already a unit
+                        elif u != dimensionless:  # already a unit
                             theunit = None
                             break
             elif func in _retain_units_if_only_first:
@@ -214,7 +215,7 @@ class UnitArray(numpy.ndarray):
                     if u is not None and u != dimensionless:
                         theunit = None
                         break
-            elif len(args)==1:
+            elif len(args) == 1:
                 theunit = getattr(self, 'units', None)
                 if theunit != dimensionless:
                     theunit = None
@@ -237,10 +238,11 @@ class UnitArray(numpy.ndarray):
                 # Handles UnitArray or UnitScalar
                 other = convert(numpy.array(other), ou, su)
             elif isinstance(other, numpy.ndarray):
-                if len(other.shape) > 0 and hasattr(other.item(0), 'derivation'):
+                if len(other.shape) > 0 and hasattr(
+                        other.item(0), 'derivation'):
                     # Handles array([1,2,3] * liters)
                     ou = unit(1, other.item(0).derivation)
-                    other = convert(other/ou, ou, su)
+                    other = convert(other / ou, ou, su)
             u = su
         return other, u
 
@@ -252,7 +254,6 @@ class UnitArray(numpy.ndarray):
         result = super(UnitArray, self).__add__(other)
         result.units = u
         return result
-
 
     def __radd__(self, other):
         """
@@ -297,7 +298,7 @@ class UnitArray(numpy.ndarray):
             # note that there may be a scale factor in the units.
             # This may be confusing for otherwise dimensionless
             # quantities
-            result.units = su*ou
+            result.units = su * ou
         elif su:
             result.units = su
         else:
@@ -305,7 +306,7 @@ class UnitArray(numpy.ndarray):
 
         # If the units are only a scale factor, apply it to result and set
         # to dimensionless
-        if isinstance(result.units,float):
+        if isinstance(result.units, float):
             result = result.as_units(dimensionless)
         return result
 
@@ -328,15 +329,15 @@ class UnitArray(numpy.ndarray):
             # This may be confusing for otherwise dimensionless
             # quantities, but the alternative is losing units like
             # 'percent'
-            result.units = su/ou
+            result.units = su / ou
         elif ou:
-            result.units = 1/ou
+            result.units = 1 / ou
         else:
             result.units = su
 
         # If the units are only a scale factor, apply it to result and set
         # to dimensionless
-        if isinstance(result.units,float):
+        if isinstance(result.units, float):
             result = result.as_units(dimensionless)
         return result
 
@@ -351,15 +352,15 @@ class UnitArray(numpy.ndarray):
             # note that there may be a scale factor in the units.
             # This may be confusing for otherwise dimensionless
             # quantities
-            result.units = ou/su
+            result.units = ou / su
         elif su:
-            result.units = 1/su
+            result.units = 1 / su
         else:
             result.units = ou
 
         # If the units are only a scale factor, apply it to result and set
         # to dimensionless
-        if isinstance(result.units,float):
+        if isinstance(result.units, float):
             result = result.as_units(dimensionless)
         return result
 
@@ -367,7 +368,7 @@ class UnitArray(numpy.ndarray):
         """
         Defines the exponent operator of a unitted array
         """
-        if isinstance(other, (int, long, float)) or \
+        if isinstance(other, (int, float)) or \
                 (isinstance(other, numpy.ndarray) and other.shape == ()):
             if isinstance(other, UnitArray):
                 if getattr(other, "units", dimensionless) == dimensionless:
@@ -439,7 +440,6 @@ class UnitArray(numpy.ndarray):
         except:
             return True
 
-
     ############################################################################
     # UnitArray interface
     ############################################################################
@@ -450,8 +450,8 @@ class UnitArray(numpy.ndarray):
         """ Convert UnitArray from its current units to a new set of units.
 
         """
-        result = self.__class__(convert(self.view(numpy.ndarray),
-                                        self.units, new_units))
+        result = self.__class__(
+            convert(self.view(numpy.ndarray), self.units, new_units))
         result.units = new_units
 
         return result

@@ -8,9 +8,11 @@ import setuptools
 
 import numpy.distutils.core
 
-
 info = {}
-execfile(join('scimath', '__init__.py'), info)
+exec(
+    compile(
+        open(join('scimath', '__init__.py')).read(),
+        join('scimath', '__init__.py'), 'exec'), info)
 
 
 # Setup our extensions to Python.
@@ -21,8 +23,7 @@ def configuration(parent_package='', top_path=None):
         ignore_setup_xxx_py=True,
         assume_default_configuration=True,
         delegate_options_to_subpackages=True,
-        quiet=True,
-    )
+        quiet=True, )
 
     config.add_subpackage('scimath.interpolate')
     config.add_subpackage('scimath')
@@ -35,23 +36,24 @@ def configuration(parent_package='', top_path=None):
 # Build the full set of packages by appending any found by setuptools'
 # find_packages to those discovered by numpy.distutils.
 config = configuration().todict()
-packages = setuptools.find_packages(exclude=config['packages'] +
-                                    ['docs', 'examples'])
+packages = setuptools.find_packages(
+    exclude=config['packages'] + ['docs', 'examples'])
 config['packages'] += packages
-
 
 # The actual setup call.
 numpy.distutils.core.setup(
-    name = 'scimath',
-    version = info['__version__'],
-    author = 'Enthought, Inc',
-    author_email = 'info@enthought.com',
-    maintainer = 'ETS Developers',
-    maintainer_email = 'enthought-dev@enthought.com',
-    url = 'https://github.com/enthought/scimath',
-    download_url = ('http://www.enthought.com/repo/ets/scimath-%s.tar.gz' %
-                    info['__version__']),
-    classifiers = [c.strip() for c in """\
+    name='scimath',
+    version=info['__version__'],
+    author='Enthought, Inc',
+    author_email='info@enthought.com',
+    maintainer='ETS Developers',
+    maintainer_email='enthought-dev@enthought.com',
+    url='https://github.com/enthought/scimath',
+    download_url=('http://www.enthought.com/repo/ets/scimath-%s.tar.gz' %
+                  info['__version__']),
+    classifiers=[
+        c.strip()
+        for c in """\
         Development Status :: 4 - Beta
         Intended Audience :: Developers
         Intended Audience :: Science/Research
@@ -66,13 +68,13 @@ numpy.distutils.core.setup(
         Topic :: Scientific/Engineering
         Topic :: Software Development
         Topic :: Software Development :: Libraries
-        """.splitlines() if len(c.split()) > 0],
-    description = 'scientific and mathematical calculations',
-    long_description = open('README.rst').read(),
-    install_requires = info['__requires__'],
-    license = "BSD",
-    package_data = {'': ['images/*', 'data/*']},
-    platforms = ["Windows", "Linux", "Mac OS-X", "Unix", "Solaris"],
-    zip_safe = False,
-    **config
-)
+        """.splitlines() if len(c.split()) > 0
+    ],
+    description='scientific and mathematical calculations',
+    long_description=open('README.rst').read(),
+    install_requires=info['__requires__'],
+    license="BSD",
+    package_data={'': ['images/*', 'data/*']},
+    platforms=["Windows", "Linux", "Mac OS-X", "Unix", "Solaris"],
+    zip_safe=False,
+    **config)

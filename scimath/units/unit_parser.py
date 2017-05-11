@@ -21,7 +21,6 @@ from scimath.units.unit import unit
 from scimath.units.SI import dimensionless
 from scimath.units.smart_unit import SmartUnit
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -29,15 +28,16 @@ logger = logging.getLogger(__name__)
 def parser():
     return Parser()
 
+
 # implementation of the Parser singleton
 class Singleton:
     __shared_state = {}
+
     def __init__(self):
         self.__dict__ = self.__shared_state
 
 
 class Parser(Singleton):
-
     def extend(self, *modules):
         for module in modules:
             self.context.update(module.__dict__)
@@ -86,32 +86,32 @@ class Parser(Singleton):
 
     def _cacheExactLabels(self):
         self.exact_labels = {}
-        for name, value in self.context.items():
+        for name, value in list(self.context.items()):
             if isinstance(value, unit) and value.label is not None:
                 self.exact_labels[value.label] = value
 
     def _loadModules(self):
 
-        import SI
-        import acceleration
-        import angle
-        import area
-        import density
-        import dimensionless
-        import electromagnetism
-        import energy
-        import force
-        import frequency
-        import length
-        import mass
-        import power
-        import pressure
-        import speed
-        import substance
-        import temperature
-        import time
-        import volume
-        import geo_units
+        from . import SI
+        from . import acceleration
+        from . import angle
+        from . import area
+        from . import density
+        from . import dimensionless
+        from . import electromagnetism
+        from . import energy
+        from . import force
+        from . import frequency
+        from . import length
+        from . import mass
+        from . import power
+        from . import pressure
+        from . import speed
+        from . import substance
+        from . import temperature
+        from . import time
+        from . import volume
+        from . import geo_units
 
         modules = [
             SI, acceleration, angle, area, density, dimensionless,
@@ -123,7 +123,6 @@ class Parser(Singleton):
 
 
 class UnitParser:
-
     def __init__(self):
 
         # Init the main unit parser
@@ -187,11 +186,8 @@ class UnitParser:
         if label.lower() == "in":
             label = "inch"
 
-        if (label == None or
-                label == '' or
-                label == 'None' or
-                label.lower() == 'unitless' or
-                label.lower() == 'unknown'):
+        if (label == None or label == '' or label == 'None' or
+                label.lower() == 'unitless' or label.lower() == 'unknown'):
             label = "dimensionless"
             pretty_label = "none"
 
@@ -226,7 +222,6 @@ class UnitParser:
                               offset_value, valid)
 
         return _unit
-
 
     def remove_dots(self, label):
         """ Some LAS files contain units written like 'ohm.m', which this class
@@ -273,9 +268,10 @@ class UnitParser:
             Raised if `suppress_unknown` is True.
         """
         if not suppress_warnings:
-            logger.debug( 'Could not parse unit: %r', label)
+            logger.debug('Could not parse unit: %r', label)
         if not suppress_unknown:
             raise UnableToParseUnits(label)
+
 
 #-------------------------------------------------------------------------------
 #  Singleton for unit parsing ....
@@ -283,9 +279,7 @@ class UnitParser:
 unit_parser = UnitParser()
 
 
-
 class UnableToParseUnits(Exception):
-
     def __init__(self, label):
         self.label = label
         return
@@ -294,5 +288,6 @@ class UnableToParseUnits(Exception):
         str = "Label '%s' is not a parseable unit string." % \
               (self.label)
         return str
+
 
 #### EOF #######################################################################

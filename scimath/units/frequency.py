@@ -19,18 +19,18 @@
 #############################################################################
 # Imports:
 #############################################################################
-from SI import hertz, kilo
-from time import minute
+from .SI import hertz, kilo
+from .time import minute
 
 #############################################################################
 # Definitions:
 #############################################################################
 
 hertz.label = 'Hz'
-kilohertz = kilo*hertz
+kilohertz = kilo * hertz
 kilohertz.label = 'kHz'
 
-rpm = 1/minute
+rpm = 1 / minute
 rpm.label = 'rpm'
 RPM = rpm
 

@@ -4,10 +4,11 @@
 from traits.api import Trait
 from scimath.units.quantity import Quantity
 
-class Scalar( Quantity ):
+
+class Scalar(Quantity):
     """ A Scalar is a Quantity object that limits data to floats.
     """
-    data = Trait( float )
+    data = Trait(float)
 
 
 ### EOF #######################################################################

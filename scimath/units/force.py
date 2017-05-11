@@ -12,7 +12,7 @@
 #
 from copy import copy
 
-from SI import newton
+from .SI import newton
 
 N = newton
 

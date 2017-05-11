@@ -11,14 +11,12 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 
-from SI import mole, kilo
-
+from .SI import mole, kilo
 
 # Aliases
 
 mol = mole
-kmol = kilo*mole
-
+kmol = kilo * mole
 
 # version
 __id__ = "$Id: substance.py,v 1.1.1.1 2003/07/02 21:39:14 aivazis Exp $"

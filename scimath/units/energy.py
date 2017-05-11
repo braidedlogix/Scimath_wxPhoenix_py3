@@ -11,8 +11,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 
-from SI import joule, kilo, mega, giga
-
+from .SI import joule, kilo, mega, giga
 
 #
 # Definitions of common energy units
@@ -26,7 +25,6 @@ from SI import joule, kilo, mega, giga
 #         http://physics.nist.gov/cuu
 #
 
-
 Btu = 1055 * joule
 erg = 1e-7 * joule
 foot_pound = 1.356 * joule
@@ -38,12 +36,11 @@ kilowatt_hour = 3.6e6 * joule
 
 electron_volt = 1.60218e-19 * joule
 
-
 # aliases
 
 J = joule
-kJ = kilo*joule
-MJ = mega*joule
+kJ = kilo * joule
+MJ = mega * joule
 
 eV = electron_volt
 KeV = kilo * eV
@@ -51,8 +48,7 @@ MeV = mega * eV
 GeV = giga * eV
 
 cal = calorie
-kcal = kilo*calorie
-
+kcal = kilo * calorie
 
 # version
 __id__ = "$Id: energy.py,v 1.1.1.1 2003/07/02 21:39:14 aivazis Exp $"

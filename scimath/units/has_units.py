@@ -6,13 +6,14 @@ import re
 import numpy
 
 # Local imports
-from variable import Variable
-from function_signature import (call_signature, def_signature,
-                                function_arguments)
-from unit_manipulation import (convert_units, set_units, have_some_units,
-    strip_units)
+from .variable import Variable
+from .function_signature import (call_signature, def_signature,
+                                 function_arguments)
+from .unit_manipulation import (convert_units, set_units, have_some_units,
+                                strip_units)
 
 section_marker = re.compile(r'[!-/:-@[-`{-~]+ *$')
+
 
 def simple_parser(lines):
     """ Parse a docstring for parameters and returns with unit notation
@@ -53,8 +54,6 @@ def simple_parser(lines):
                 output_lines.append(line)
         last_line = line
     return input_lines, output_lines
-
-
 
 
 def has_units(func=None, summary='', doc='', inputs=None, outputs=None):
@@ -181,8 +180,9 @@ def has_units(func=None, summary='', doc='', inputs=None, outputs=None):
     if func is not None:
 
         ## Strip indentation/whitespace before and after each line of docstring
-        stripped_lines = [line.strip()
-                          for line in func.__doc__.expandtabs().splitlines()]
+        stripped_lines = [
+            line.strip() for line in func.__doc__.expandtabs().splitlines()
+        ]
 
         unitted_inputlines, unitted_outputlines = simple_parser(stripped_lines)
 
@@ -198,7 +198,7 @@ def has_units(func=None, summary='', doc='', inputs=None, outputs=None):
 
         return _has_units(summary, doc, inputs_dict, outputs_list)(func)
 
-    else: # func is None
+    else:  # func is None
 
         inputs_dict = {}
         if inputs is not None:
@@ -218,6 +218,7 @@ def has_units(func=None, summary='', doc='', inputs=None, outputs=None):
 
         return _has_units(summary, doc, inputs_dict, outputs_list)
 
+
 def _has_units(summary, doc, inputs, outputs):
     def units_wrap(_func_):
         # This special-cases the output of numpy.vectorize
@@ -229,11 +230,11 @@ def _has_units(summary, doc, inputs, outputs):
         else:
             thefunc = _func_
 
-        name = thefunc.func_name
-        define = def_signature(thefunc) #@UnusedVariable
-        call = call_signature(thefunc, '_func_') #@UnusedVariable
-        args, kw, args_ordered = function_arguments(thefunc) #@UnusedVariable
-        args_string = ', '.join(args_ordered) #@UnusedVariable
+        name = thefunc.__name__
+        define = def_signature(thefunc)  #@UnusedVariable
+        call = call_signature(thefunc, '_func_')  #@UnusedVariable
+        args, kw, args_ordered = function_arguments(thefunc)  #@UnusedVariable
+        args_string = ', '.join(args_ordered)  #@UnusedVariable
 
         # build list of units for the arguments
         # fixme: We should detect when someone has specified an input name
@@ -244,7 +245,7 @@ def _has_units(summary, doc, inputs, outputs):
         input_units = []
         input_list = []
         for arg in args_ordered:
-            if inputs.has_key(arg):
+            if arg in inputs:
                 input_units.append(inputs[arg].units)
                 input_list.append(copy.copy(inputs[arg]))
             else:
@@ -282,25 +283,26 @@ def _has_units(summary, doc, inputs, outputs):
             '$name.outputs = output_list[:]',
             '$name.summary = summary',
             '$name.doc = doc',
-            ]))
+        ]))
         code = template.substitute(**locals())
 
         # Create the namespace in which the code will be executed.
         # fixme: This might work fine if it were just locals()
-        vars = {'thefunc':thefunc,
-                '_func_': _func_,
-                'convert_units': convert_units,
-                'set_units': set_units,
-                'have_some_units': have_some_units,
-                'strip_units': strip_units,
-                'input_list': input_list,
-                'output_list': output_list,
-                'input_units':input_units,
-                'output_units':output_units,
-                'summary':summary,
-                'doc':doc,
-                }
-        exec code in vars
+        vars = {
+            'thefunc': thefunc,
+            '_func_': _func_,
+            'convert_units': convert_units,
+            'set_units': set_units,
+            'have_some_units': have_some_units,
+            'strip_units': strip_units,
+            'input_list': input_list,
+            'output_list': output_list,
+            'input_units': input_units,
+            'output_units': output_units,
+            'summary': summary,
+            'doc': doc,
+        }
+        exec(code, vars)
 
         # return freshly created wrapper version of the function.
         return vars[name]

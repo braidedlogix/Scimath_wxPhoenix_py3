@@ -23,7 +23,8 @@ geo_imports = [
     'siemen', 'siemens', 'siemens_per_m', 'siemens_per_meter', 'sievert',
     'steradian', 'tera', 'tesla', 'unit', 'us_fluid_gallon', 'us_per_ft', 'v',
     'volt', 'volts', 'watt', 'weber', 'yocto', 'yotta', 'zepto', 'zetta'
-    ]
+]
+
 
 def write_geo_err_msg(name):
     """write the message describing the import not found in geo_units"""
@@ -31,6 +32,7 @@ def write_geo_err_msg(name):
     scimath.units.geo_units module. Check to ensure that '{0}' is
     available as an import from scimath.units.geounits."""
     return msg.format(name)
+
 
 class GeoUnitsImportsTestCase(unittest.TestCase):
     """ When geo_units was initially set up, many units were defined there
@@ -43,15 +45,17 @@ class GeoUnitsImportsTestCase(unittest.TestCase):
     reorganization.
     
     """
+
     def test_geo_imports(self):
         """ Test whether everything that was availabile in geo_units still is available.
         """
         from scimath.units import geo_units
 
         available_now = geo_units.__dict__
-        
+
         for name in geo_imports:
             self.assertIn(name, available_now, msg=write_geo_err_msg(name))
-            
+
+
 if __name__ == '__main__':
     unittest.main()

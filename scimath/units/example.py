@@ -2,9 +2,10 @@ from scimath.units.api import has_units
 from scimath.units.example_units import a_duck
 from scimath.units.length import foot, meter
 
+
 @has_units
-def add(a,b):
-     """ Add two arrays in ft and convert them to m.
+def add(a, b):
+    """ Add two arrays in ft and convert them to m.
 
          Parameters
          ----------
@@ -19,11 +20,12 @@ def add(a,b):
              c = a + b
 
      """
-     return (a + b) * foot / meter
+    return (a + b) * foot / meter
+
 
 @has_units
 def witch_test(mass_of_maiden):
-     """ Test to determine if one or more young maidens is a witch.
+    """ Test to determine if one or more young maidens is a witch.
 
      Parameters
      ----------
@@ -39,4 +41,4 @@ def witch_test(mass_of_maiden):
      If she weighs as much as a duck, then she's made of wood, and she floats,
      so she's a witch.
      """
-     return mass_of_maiden >= 1
+    return mass_of_maiden >= 1

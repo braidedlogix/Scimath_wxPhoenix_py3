@@ -15,13 +15,12 @@ from scimath.units.time import microsecond
 from scimath.units.volume import cubic_centimeter, cubic_meter, \
      us_fluid_gallon, liter, cubic_foot
 
-
 ###############################################################################
 # impedance_units          g*km/cc/s, g*f/cc/s
 ###############################################################################
-g_km_per_cc_s = (grams*kilometers)/(cubic_centimeter*second)
+g_km_per_cc_s = (grams * kilometers) / (cubic_centimeter * second)
 g_km_per_cc_s.label = 'g*km/(cc*s)'
-g_ft_per_cc_s = (grams*foot)/(cubic_centimeter*second)
+g_ft_per_cc_s = (grams * foot) / (cubic_centimeter * second)
 g_ft_per_cc_s.label = 'g*ft/(cc*s)'
 
 # This is the MKS variant.
@@ -36,7 +35,6 @@ mrayl.label = 'MRayl'
 # imported from scimath.units.pressure
 ###############################################################################
 
-
 ###############################################################################
 # Photoelectric absorption factor
 ###############################################################################
@@ -48,19 +46,19 @@ barns_per_electron.label = 'b/e'
 # pressure_gradient_units  psi/f, MPa/m, MPa/100f
 ###############################################################################
 
-psi_per_f  = psi/foot
-psi_per_f.label  = 'psi/ft'
+psi_per_f = psi / foot
+psi_per_f.label = 'psi/ft'
 psi_per_ft = psi_per_f
 
-MPa_per_m = MPa/meter
+MPa_per_m = MPa / meter
 MPa_per_m.label = 'MPa/m'
 
-psi_per_ft = pounds_per_square_inch /foot
+psi_per_ft = pounds_per_square_inch / foot
 
-MPa_per_f  = MPa/foot
+MPa_per_f = MPa / foot
 MPa_per_f.label = 'MPa/ft'
 MPa_per_ft = MPa_per_f
-MPa_per_100f  = MPa/(100*foot)
+MPa_per_100f = MPa / (100 * foot)
 MPa_per_100f.label = 'MPa/100ft'
 MPa_per_100ft = MPa_per_100f
 
@@ -68,7 +66,7 @@ MPa_per_100ft = MPa_per_100f
 # Density units used in pressure gradient calculations
 ###############################################################################
 
-lb_per_gal    = lb/us_fluid_gallon
+lb_per_gal = lb / us_fluid_gallon
 lb_per_gallon = lb_per_gal
 
 ppg = copy(lb_per_gal)
@@ -83,5 +81,5 @@ gapi = copy(dimensionless)
 ###############################################################################
 # psonic
 ###############################################################################
-us_per_ft = microsecond/foot
+us_per_ft = microsecond / foot
 us_per_ft.label = 'us/ft'

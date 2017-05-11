@@ -1,14 +1,14 @@
 """ The resource type for quantities. """
 
-
 # Enthought library imports.
 from envisage.resource import ObjectResourceType
 from traits.api import Instance
 from scimath.units.quantity import Quantity
 
 # Local imports.
-from quantity_node_type import QuantityNodeType
-from quantity_resource_editor import QuantityResourceEditor
+from .quantity_node_type import QuantityNodeType
+from .quantity_resource_editor import QuantityResourceEditor
+
 
 class QuantityResourceType(ObjectResourceType):
     """ The resource type for quantities. """
@@ -33,7 +33,6 @@ class QuantityResourceType(ObjectResourceType):
 
         return QuantityNodeType(resource_type=self)
 
-
     #### Methods ##############################################################
 
     def clone(self, obj):
@@ -52,5 +51,6 @@ class QuantityResourceType(ObjectResourceType):
         obj.name = name
 
         return
+
 
 ##### EOF #####################################################################

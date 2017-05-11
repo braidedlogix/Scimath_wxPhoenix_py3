@@ -11,7 +11,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 
-from SI import pascal, kilo, mega, giga
+from .SI import pascal, kilo, mega, giga
 from scimath.units.force import lbf
 from scimath.units.length import inch
 from scimath.units.unit import unit
@@ -26,27 +26,25 @@ from scimath.units.unit import unit
 #         http://physics.nist.gov/cuu
 #
 
-
 # aliases
 
 Pa = pascal
 Pa.label = 'Pa'
 
-kPa = kilo*pascal
+kPa = kilo * pascal
 kPa.label = 'kPa'
 
-MPa = mega*pascal
+MPa = mega * pascal
 MPa.label = 'MPa'
 mpa = MPa
 Mpa = MPa
 MPA = MPa
 
-GPa = giga*pascal
+GPa = giga * pascal
 GPa.label = 'GPa'
 gpa = GPa
 Gpa = GPa
 GPA = GPa
-
 
 # others
 
@@ -66,7 +64,7 @@ atmosphere = 101325 * pascal
 
 atm = atmosphere
 
-pounds_per_square_inch = lbf / inch ** 2
+pounds_per_square_inch = lbf / inch**2
 pounds_per_square_inch.label = 'psi'
 psi = pounds_per_square_inch
 apsi = psi

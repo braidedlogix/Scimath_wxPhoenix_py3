@@ -35,24 +35,16 @@ ID = "Units"
 
 #### Preferences ##############################################################
 
-preferences = Preferences(
-    defaults = {
-        'default_unit_system' : 'KGS'
-    }
-)
+preferences = Preferences(defaults={'default_unit_system': 'KGS'})
 
 #### Resource Types ###########################################################
 QUANTITY_RESOURCE_TYPE = \
     'scimath.units.plugin.quantity_resource_type.QuantityResourceType'
 
-resource_manager = ResourceManager(
-    resource_types = [
-        ResourceType(
-            class_name = QUANTITY_RESOURCE_TYPE,
-            precedes   = [INSTANCE_RESOURCE_TYPE]
-        ),
-    ]
-)
+resource_manager = ResourceManager(resource_types=[
+    ResourceType(
+        class_name=QUANTITY_RESOURCE_TYPE, precedes=[INSTANCE_RESOURCE_TYPE]),
+])
 
 ### Cookies ###################################################################
 
@@ -71,20 +63,16 @@ cookies = CookieImplementations(
 )
 
 ### Resource Wizards ##########################################################
-resource_wizards = ResourceWizards(
-    resource_wizards = [
-        ResourceWizard(
-            category    = 'Data Resources',
-            name        = 'Quantity',
-            class_name  = 'scimath.units.plugin.new_quantity_wizard.NewQuantityWizard'
-        ),
-        ResourceWizard(
-            category    = 'Data Resources',
-            name        = 'Scalar',
-            class_name  = 'scimath.units.plugin.new_scalar_wizard.NewScalarWizard'
-        )
-    ]
-)
+resource_wizards = ResourceWizards(resource_wizards=[
+    ResourceWizard(
+        category='Data Resources',
+        name='Quantity',
+        class_name='scimath.units.plugin.new_quantity_wizard.NewQuantityWizard'
+    ), ResourceWizard(
+        category='Data Resources',
+        name='Scalar',
+        class_name='scimath.units.plugin.new_scalar_wizard.NewScalarWizard')
+])
 
 #### Menus/Actions ############################################################
 set_unit_system = Action(
@@ -99,11 +87,7 @@ set_unit_system = Action(
     tool_bar_path   = '',
 )
 
-ui_actions = UIActions(
-    actions = [
-        set_unit_system,
-    ]
-)
+ui_actions = UIActions(actions=[set_unit_system, ])
 
 ###############################################################################
 # The plugin definition!
@@ -111,37 +95,29 @@ ui_actions = UIActions(
 
 PluginDefinition(
     # The plugin's globally unique identifier.
-    id = ID,
+    id=ID,
 
     # The name of the class that implements the plugin.
-    class_name = "scimath.units.plugin.units_plugin.UnitsPlugin",
+    class_name="scimath.units.plugin.units_plugin.UnitsPlugin",
 
     # General information about the plugin.
-    name          = "Units Plugin",
-    version       = "1.0.0",
-    provider_name = "Enthought Inc",
-    provider_url  = "www.enthought.com",
-    enabled       = True,
-    autostart     = True,
+    name="Units Plugin",
+    version="1.0.0",
+    provider_name="Enthought Inc",
+    provider_url="www.enthought.com",
+    enabled=True,
+    autostart=True,
 
     # The Id's of the plugins that this plugin requires.
-    requires = [
-        "envisage.core",
-        "envisage.ui",
-        "envisage.resource"
-    ],
+    requires=["envisage.core", "envisage.ui", "envisage.resource"],
 
     # The extension points offered by this plugin,
-    extension_points = [],
+    extension_points=[],
 
     # The contributions that this plugin makes to extension points offered by
     # either itself or other plugins.
-    extensions = [ui_actions,
-                  preferences,
-                  resource_manager,
-                  resource_wizards,
-                  cookies
-                 ]
-)
+    extensions=[
+        ui_actions, preferences, resource_manager, resource_wizards, cookies
+    ])
 
 #### EOF ######################################################################

@@ -6,15 +6,14 @@
 #  Author: Corran Webster
 #
 #-----------------------------------------------------------------------------
-
 """Utility functions for physical quantities
 """
 
 # we don't want integer division when dealing with units
-from __future__ import division
 
 # Global module imports
 from copy import copy
+
 
 def dict_mul(a, n):
     """Given a dictionary, multiply values by a scalar
@@ -88,8 +87,8 @@ def dict_add(a, b):
     {'a': 4.5, 'b': -4.0, 'c': 12.0}
     """
     c = copy(b)
-    for key, value in a.items():
-        c[key] = value+b.get(key, 0)
+    for key, value in list(a.items()):
+        c[key] = value + b.get(key, 0)
         if c[key] == 0.0:
             del c[key]
     return c
@@ -113,11 +112,12 @@ def dict_sub(a, b):
         {'a': 1.5, 'b': -4.0, 'c': -12.0}
     """
     c = copy(a)
-    for key, value in b.items():
-        c[key] = a.get(key, 0)-value
+    for key, value in list(b.items()):
+        c[key] = a.get(key, 0) - value
         if c[key] == 0.0:
             del c[key]
     return c
+
 
 def python_powers(key, value):
     """ Convert a value to a power expressed in standard Python syntax
@@ -135,25 +135,26 @@ def python_powers(key, value):
     if value == 1:
         return key
     else:
-        return key+"**"+str(value).rstrip(".0")
+        return key + "**" + str(value).rstrip(".0")
+
 
 _unicode_supers = {
-    "0": u"\u2070",
-    "1": u"\u00B9",
-    "2": u"\u00B2",
-    "3": u"\u00B3",
-    "4": u"\u2074",
-    "5": u"\u2075",
-    "6": u"\u2076",
-    "7": u"\u2077",
-    "8": u"\u2078",
-    "9": u"\u2079",
-    "+": u"\u207A",
-    "-": u"\u207B",
+    "0": "\u2070",
+    "1": "\u00B9",
+    "2": "\u00B2",
+    "3": "\u00B3",
+    "4": "\u2074",
+    "5": "\u2075",
+    "6": "\u2076",
+    "7": "\u2077",
+    "8": "\u2078",
+    "9": "\u2079",
+    "+": "\u207A",
+    "-": "\u207B",
 }
 
-_unicode_supers_reversed = dict((value, key) for key, value in
-                                _unicode_supers.items())
+_unicode_supers_reversed = dict(
+    (value, key) for key, value in list(_unicode_supers.items()))
 
 
 def unicode_powers(key, value):
@@ -174,11 +175,12 @@ def unicode_powers(key, value):
     else:
         s = str(value).rstrip(".0")
         try:
-            return key+u"".join(_unicode_supers[char] for char in s)
+            return key + "".join(_unicode_supers[char] for char in s)
         except KeyError:
             # don't know how to handle, so punt - most likely reason is
             # a decimal point in the expression
-            return key+u"^"+s
+            return key + "^" + s
+
 
 def tex_powers(key, value):
     """ Convert a value to a power expression in TeX/LaTeX
@@ -196,7 +198,8 @@ def tex_powers(key, value):
     if value == 1:
         return key
     else:
-        return key+"^{"+str(value).rstrip(".0")+"}"
+        return key + "^{" + str(value).rstrip(".0") + "}"
+
 
 _named_powers = {
     2: "square",
@@ -227,19 +230,24 @@ def name_powers(key, value):
         return key + " to the " + str(value).rstrip(".0")
 
 
-
-def format_expansion(dimensions, mul="*", pow_func=python_powers, div=False,
-                     empty_numerator="1", div_symbol="/", group_symbols="()"):
+def format_expansion(dimensions,
+                     mul="*",
+                     pow_func=python_powers,
+                     div=False,
+                     empty_numerator="1",
+                     div_symbol="/",
+                     group_symbols="()"):
     """ Format a dictionary of symbol, power pairs """
     if div:
-        numerator = mul.join(pow_func(key, value)
-                        for key, value in sorted(dimensions.items())
-                            if value > 0)
+        numerator = mul.join(
+            pow_func(key, value) for key, value in sorted(dimensions.items())
+            if value > 0)
         if numerator == "":
             numerator = empty_numerator
-        denominator_terms = [pow_func(key, -value)
-                        for key, value in sorted(dimensions.items())
-                            if value < 0]
+        denominator_terms = [
+            pow_func(key, -value) for key, value in sorted(dimensions.items())
+            if value < 0
+        ]
         if len(denominator_terms) > 1:
             return numerator + div_symbol + group_symbols[0] + \
                     mul.join(denominator_terms) + group_symbols[1]
@@ -248,6 +256,6 @@ def format_expansion(dimensions, mul="*", pow_func=python_powers, div=False,
         else:
             return numerator
     else:
-        return mul.join(pow_func(key, value)
-                        for key, value in sorted(dimensions.items())
-                            if value != 0)
+        return mul.join(
+            pow_func(key, value) for key, value in sorted(dimensions.items())
+            if value != 0)

@@ -13,5 +13,5 @@ very_small_rocks.label = 'very small rocks'
 a_duck = 1.3 * kilogram
 a_duck.label = 'a duck'
 
-import example_units as u
+from . import example_units as u
 unit_parser.parser.extend(u)

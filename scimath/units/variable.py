@@ -3,6 +3,7 @@ from traits.api import HasTraits, Instance, Str
 from scimath.units.unit import unit
 from scimath.units.unit_parser import unit_parser
 
+
 class Variable(HasTraits):
     """ Variable contains information about an input/output to a function
 
@@ -12,7 +13,7 @@ class Variable(HasTraits):
     """
 
     # The name of the variable.
-    name= Str
+    name = Str
 
     # A description of the variable.
     desc = Str
@@ -31,7 +32,7 @@ class Variable(HasTraits):
         """
         name = ''
         desc = ''
-        units=None
+        units = None
 
         fields = string.split(':')
 
@@ -46,14 +47,13 @@ class Variable(HasTraits):
         if len(fields) > 1:
             desc = fields[1].strip()
 
-
         # Finally handle any 'keyword' attributes.
         for extra_attributes in fields[2:]:
             var, value = [x.strip() for x in extra_attributes.split('=')]
-            if var.lower()=='units':
+            if var.lower() == 'units':
                 units = unit_parser.parse_unit(value)
             else:
                 # fixme: raise some sort of error here?
                 pass
 
-        return cls(name=name,desc=desc,units=units)
+        return cls(name=name, desc=desc, units=units)

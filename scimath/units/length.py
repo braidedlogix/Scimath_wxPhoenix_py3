@@ -27,9 +27,8 @@
 # Imports:
 #############################################################################
 
-
-from SI import meter
-from SI import kilo, centi, milli, micro, nano
+from .SI import meter
+from .SI import kilo, centi, milli, micro, nano
 
 #############################################################################
 # Definitions:
@@ -85,7 +84,7 @@ mm = millimeter
 cm = centimeter
 km = kilometer
 
-f  = foot
+f = foot
 ft = foot
 feet = foot
 
@@ -97,4 +96,3 @@ kilometers = kilometer
 inches = IN = inch
 
 #### EOF ######################################################################
-

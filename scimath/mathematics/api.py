@@ -5,5 +5,4 @@
 #
 #-----------------------------------------------------------------------------
 
-from quaternion import normq, qmult, rotmat, rotquat
-
+from .quaternion import normq, qmult, rotmat, rotquat

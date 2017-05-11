@@ -2,11 +2,13 @@ import numpy
 
 import _interpolate
 
+
 def make_array_safe(ary, typecode):
     ary = numpy.atleast_1d(numpy.asarray(ary, typecode))
     if not ary.flags['CONTIGUOUS']:
         ary = ary.copy()
     return ary
+
 
 def linear(x, y, new_x):
     """ Linearly interpolates values in new_x based on the values in x and y
@@ -35,6 +37,7 @@ def linear(x, y, new_x):
 
     return new_y
 
+
 def logarithmic(x, y, new_x):
     """ Linearly interpolates values in new_x based in the log space of y.
 
@@ -62,6 +65,7 @@ def logarithmic(x, y, new_x):
 
     return new_y
 
+
 def block_average_above(x, y, new_x):
     """ Linearly interpolates values in new_x based on the values in x and y
 
@@ -83,8 +87,8 @@ def block_average_above(x, y, new_x):
     if len(y.shape) == 2:
         new_y = numpy.zeros((y.shape[0], len(new_x)), numpy.float64)
         for i in range(len(new_y)):
-            bad_index = _interpolate.block_averave_above_dddd(x, y[i],
-                                                            new_x, new_y[i])
+            bad_index = _interpolate.block_averave_above_dddd(x, y[i], new_x,
+                                                              new_y[i])
             if bad_index is not None:
                 break
     else:
@@ -95,9 +99,10 @@ def block_average_above(x, y, new_x):
         msg = "block_average_above cannot extrapolate and new_x[%d]=%f "\
               "is out of the x range (%f, %f)" % \
               (bad_index, new_x[bad_index], x[0], x[-1])
-        raise ValueError, msg
+        raise ValueError(msg)
 
     return new_y
+
 
 def window_average(x, y, new_x, width=10.0):
     bad_index = None
@@ -109,13 +114,13 @@ def window_average(x, y, new_x, width=10.0):
     if len(y.shape) == 2:
         new_y = numpy.zeros((y.shape[0], len(new_x)), numpy.float64)
         for i in range(len(new_y)):
-            _interpolate.window_average_ddddd(x, y[i], new_x, new_y[i],
-                                              width)
+            _interpolate.window_average_ddddd(x, y[i], new_x, new_y[i], width)
     else:
         new_y = numpy.zeros(len(new_x), numpy.float64)
         _interpolate.window_average_ddddd(x, y, new_x, new_y, width)
 
     return new_y
+
 
 def main():
     from scipy import arange, ones
@@ -123,33 +128,33 @@ def main():
     N = 3000.
     x = arange(N)
     y = arange(N)
-    new_x = arange(N)+0.5
+    new_x = arange(N) + 0.5
     t1 = time.clock()
     new_y = linear(x, y, new_x)
     t2 = time.clock()
-    print '1d interp (sec):', t2 - t1
-    print new_y[:5]
+    print('1d interp (sec):', t2 - t1)
+    print(new_y[:5])
 
     N = 3000.
     x = arange(N)
     y = arange(N)
 
-    new_x = arange(N/2)*2
+    new_x = arange(N / 2) * 2
     t1 = time.clock()
     new_y = block_average_above(x, y, new_x)
     t2 = time.clock()
-    print '1d block_average_above (sec):', t2 - t1
-    print new_y[:5]
+    print('1d block_average_above (sec):', t2 - t1)
+    print(new_y[:5])
 
     N = 3000.
     x = arange(N)
-    y = ones((100,N)) * arange(N)
-    new_x = arange(N)+0.5
+    y = ones((100, N)) * arange(N)
+    new_x = arange(N) + 0.5
     t1 = time.clock()
     new_y = linear(x, y, new_x)
     t2 = time.clock()
-    print 'fast interpolate (sec):', t2 - t1
-    print new_y[:5,:5]
+    print('fast interpolate (sec):', t2 - t1)
+    print(new_y[:5, :5])
 
     import scipy
     N = 3000.
@@ -160,8 +165,9 @@ def main():
     interp = scipy.interpolate.interp1d(x, y)
     new_y = interp(new_x)
     t2 = time.clock()
-    print 'scipy interp1d (sec):', t2 - t1
-    print new_y[:5,:5]
+    print('scipy interp1d (sec):', t2 - t1)
+    print(new_y[:5, :5])
+
 
 if __name__ == '__main__':
     main()

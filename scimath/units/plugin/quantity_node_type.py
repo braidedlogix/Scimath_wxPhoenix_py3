@@ -1,6 +1,5 @@
 """ The resource type for quantities. """
 
-
 # Enthought library imports.
 from envisage.resource import ObjectNodeType
 from pyface.api import ImageResource
@@ -22,5 +21,6 @@ class QuantityNodeType(ObjectNodeType):
         """ Does the node allow children (ie. a folder vs a file). """
 
         return False
+
 
 ##### EOF #####################################################################

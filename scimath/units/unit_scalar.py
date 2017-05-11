@@ -1,4 +1,5 @@
-from unit_array import UnitArray
+from .unit_array import UnitArray
+
 
 # `array(x)` behaves like `x`, so we get unitted scalars for free. Efficiency
 # is of course a concern, but there are no other solutions in sight, and this
@@ -16,6 +17,7 @@ class UnitScalar(UnitArray):
         >>> x**2, (x**2).units
         (UnitScalar(25, units='0.0001*m**2'), 0.0001*m**2)
     '''
+
     def __repr__(self):
-        return ("UnitScalar(%s, units='%s')" 
-                % (self.item().__repr__(), repr(self.units)))
+        return ("UnitScalar(%s, units='%s')" %
+                (self.item().__repr__(), repr(self.units)))

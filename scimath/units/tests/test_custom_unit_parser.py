@@ -8,7 +8,6 @@ from scimath.units.tests import sample_units
 
 
 class TestCustomUnitParser(unittest.TestCase):
-
     def test_extend_from_module(self):
         # Custom unit is not known initially
         with self.assertRaises(UnableToParseUnits):

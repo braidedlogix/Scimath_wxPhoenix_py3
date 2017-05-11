@@ -14,11 +14,9 @@ from envisage.resource.resource_ui_plugin_definition \
 # identifiers defined in this module).
 ID = "pyface.resource_type"
 
-
 ###############################################################################
 # Extensions.
 ###############################################################################
-
 
 #### Resource types ###########################################################
 
@@ -30,15 +28,10 @@ INSTANCE_RESOURCE_TYPE = BASE + '.instance_resource_type.InstanceResourceType'
 QUANTITY_RESOURCE_TYPE = ID \
     + '.quantity_resource_type.QuantityResourceType'
 
-
-resource_manager = ResourceManager(
-    resource_types = [
-        ResourceType(
-            class_name = QUANTITY_RESOURCE_TYPE,
-            precedes = [INSTANCE_RESOURCE_TYPE]
-        )
-    ]
-)
+resource_manager = ResourceManager(resource_types=[
+    ResourceType(
+        class_name=QUANTITY_RESOURCE_TYPE, precedes=[INSTANCE_RESOURCE_TYPE])
+])
 
 ### Cookies ###################################################################
 
@@ -57,21 +50,16 @@ cookies = CookieImplementations(
 )
 
 ### Resource Wizards ##########################################################
-resource_wizards = ResourceWizards(
-    resource_wizards = [
-        ResourceWizard(
-            category    = 'Data Resources',
-            name        = 'Quantity',
-            class_name  = ID + '.new_quantity_wizard.NewQuantityWizard'
-        ),
-        ResourceWizard(
-            category    = 'Data Resources',
-            name        = 'Scalar',
-            class_name  = ID + '.new_scalar_wizard.NewScalarWizard'
-        )
-    ]
-)
-
+resource_wizards = ResourceWizards(resource_wizards=[
+    ResourceWizard(
+        category='Data Resources',
+        name='Quantity',
+        class_name=ID + '.new_quantity_wizard.NewQuantityWizard'),
+    ResourceWizard(
+        category='Data Resources',
+        name='Scalar',
+        class_name=ID + '.new_scalar_wizard.NewScalarWizard')
+])
 
 ###############################################################################
 # The plugin definition.
@@ -79,34 +67,31 @@ resource_wizards = ResourceWizards(
 
 PluginDefinition(
     # The plugin's globally unique identifier.
-    id = ID,
+    id=ID,
 
     # The name of the class that implements the plugin.
-    class_name = "",
+    class_name="",
 
     # General information about the plugin.
-    name          = "Resource Plugin",
-    version       = "1.0.0",
-    provider_name = "Enthought Inc",
-    provider_url  = "www.enthought.com",
-    enabled       = True,
-    autostart     = False,
+    name="Resource Plugin",
+    version="1.0.0",
+    provider_name="Enthought Inc",
+    provider_url="www.enthought.com",
+    enabled=True,
+    autostart=False,
 
     # The Id's of the plugins that this plugin requires.
-    requires = [
-        "envisage.core",
-        "envisage.project",
-        "envisage.resource",
+    requires=[
+        "envisage.core", "envisage.project", "envisage.resource",
         "envisage.resource_ui"
     ],
 
     # The contributions that this plugin makes to extension points offered by
     # either itself or other plugins.
-    extensions = [
+    extensions=[
         resource_manager,
         resource_wizards,
         cookies,
-    ]
-)
+    ])
 
 #### EOF ######################################################################

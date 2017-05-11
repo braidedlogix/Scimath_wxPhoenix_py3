@@ -22,7 +22,7 @@
 #############################################################################
 
 import math
-from SI import radian
+from .SI import radian
 
 #############################################################################
 # Definitions:
@@ -65,7 +65,7 @@ quadrants = quadrant
 right_angle = quadrant
 right_angles = quadrant
 
-sextant = 60*degree
+sextant = 60 * degree
 sextants = sextant
 
 mil = 90 / 1600.0 * degree

@@ -6,8 +6,6 @@
 #  Author: Greg Rogers
 #
 #-----------------------------------------------------------------------------
-
-
 """ Trait definitions for the measure-of family name when dealing with physical
 quantities in various unit systems.
 """
@@ -15,7 +13,8 @@ quantities in various unit systems.
 from traits.api import Bool, HasTraits, List, Str, \
     Trait, TraitError, TraitFactory, TraitHandler
 
-from unit_manager import unit_manager
+from .unit_manager import unit_manager
+
 
 class FamilyNameTraitHandler(TraitHandler, HasTraits):
     """ TraitHandler for units that validates unit string parsing and,
@@ -42,13 +41,13 @@ class FamilyNameTraitHandler(TraitHandler, HasTraits):
         the registered family names (see UnitManager) and the allow_none
         and is_strict attributes.
         """
-        if ( (value is None and not self.allow_none)
-            or (self.is_strict and not unit_manager.unit_families.has_key(value))):
+        if ((value is None and not self.allow_none) or
+            (self.is_strict and value not in unit_manager.unit_families)):
             self.error(obj, name, value)
 
         return value
 
-    def post_setattr ( self, obj, name, value ):
+    def post_setattr(self, obj, name, value):
         """ object's family name trait has been validated and changed,
         now enforce compatibility of the units if required.
         """
@@ -58,12 +57,12 @@ class FamilyNameTraitHandler(TraitHandler, HasTraits):
             if value is not None and value is not '' \
                 and hasattr(obj, self.units_trait):
 
-                units = getattr(obj, self.units_trait )
+                units = getattr(obj, self.units_trait)
 
                 force = value in ['unknown', 'none']
-                if force or not unit_manager.is_compatible( units, value ):
-                    default_units = unit_manager.default_units_for( value )
-                    setattr( obj, self.units_trait, default_units )
+                if force or not unit_manager.is_compatible(units, value):
+                    default_units = unit_manager.default_units_for(value)
+                    setattr(obj, self.units_trait, default_units)
 
         return
 
@@ -72,7 +71,8 @@ class FamilyNameTraitHandler(TraitHandler, HasTraits):
         msg_parts = ['a string']
 
         if self.is_strict:
-            msg_parts.append('recognized as a family name by the units manager')
+            msg_parts.append(
+                'recognized as a family name by the units manager')
 
         if self.allow_none:
             msg_parts.append('or None')
@@ -81,29 +81,34 @@ class FamilyNameTraitHandler(TraitHandler, HasTraits):
         return msg
 
 
-def family_name_traits_factory_function( value=None, is_strict=False,
-                                         allow_none=True, units_trait='',
-                                         editor=None,
-                                         **metadata):
+def family_name_traits_factory_function(value=None,
+                                        is_strict=False,
+                                        allow_none=True,
+                                        units_trait='',
+                                        editor=None,
+                                        **metadata):
     if not allow_none and value is None:
-        raise TraitError, "value must not be None"
+        raise TraitError("value must not be None")
 
     if editor is None:
         # Delay UI imports until here such that this library can be used without
         # a UI.
         from traitsui.api import EnumEditor
-        editor = EnumEditor(values=sorted(unit_manager.unit_families.keys()),
-            mode='list')
+        editor = EnumEditor(
+            values=sorted(unit_manager.unit_families.keys()), mode='list')
 
-    return Trait( value, FamilyNameTraitHandler(allow_none=allow_none,
-                                          is_strict=is_strict,
-                                          units_trait=units_trait),
-                  editor=editor,
-                  **metadata )
+    return Trait(
+        value,
+        FamilyNameTraitHandler(
+            allow_none=allow_none,
+            is_strict=is_strict,
+            units_trait=units_trait),
+        editor=editor,
+        **metadata)
+
 
 # A Trait where the value is a units family name string.
 # See FamilyNameTraitHandler for details.
-FamilyNameTrait = TraitFactory( family_name_traits_factory_function )
-
+FamilyNameTrait = TraitFactory(family_name_traits_factory_function)
 
 ### EOF
